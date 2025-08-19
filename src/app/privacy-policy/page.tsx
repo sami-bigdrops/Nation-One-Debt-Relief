@@ -1,6 +1,5 @@
 import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
+
 import Navbar from '@/ndr/navbar'
 import Footer from '@/ndr/footer'
 
@@ -24,11 +23,11 @@ export default function PrivacyPolicy() {
                              <section className="mb-6 md:mb-8 lg:mb-10">
                  <h2 className="text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-medium text-[#003995] mb-3 md:mb-4 lg:mb-5">Introduction</h2>
                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                   Nation One Debt Relief, the owner of <a href="https://www.nationonedebtrelief.com" className="text-[#003995] no-underline transition-colors duration-300 ease-in-out font-medium hover:text-[#F31B47] hover:underline">www.nationonedebtrelief.com</a> ("Company" or "We") respect your privacy and are committed to protecting it through our compliance with this policy.
+                   Nation One Debt Relief, the owner of <a href="https://www.nationonedebtrelief.com" className="text-[#003995] no-underline transition-colors duration-300 ease-in-out font-medium hover:text-[#F31B47] hover:underline">www.nationonedebtrelief.com</a> (&quot;Company&quot; or &quot;We&quot;) respect your privacy and are committed to protecting it through our compliance with this policy.
                  </p>
 
                                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                   This policy describes the types of information we may collect from you or that you may provide when you visit the website <a href="https://www.nationonedebtrelief.com" className="text-[#003995] no-underline transition-colors duration-300 ease-in-out font-medium hover:text-[#F31B47] hover:underline">www.nationonedebtrelief.com</a> (our "Website") and our practices for collecting, using, maintaining, protecting, and disclosing that information.                
+                   This policy describes the types of information we may collect from you or that you may provide when you visit the website <a href="https://www.nationonedebtrelief.com" className="text-[#003995] no-underline transition-colors duration-300 ease-in-out font-medium hover:text-[#F31B47] hover:underline">www.nationonedebtrelief.com</a> (our &quot;Website&quot;) and our practices for collecting, using, maintaining, protecting, and disclosing that information.                
                  </p>
 
                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
@@ -75,7 +74,7 @@ export default function PrivacyPolicy() {
                    We collect several types of information from and about users of our Website, including information:
                  </p>
                  <ul className="list-disc pl-6 md:pl-8 lg:pl-[30px] xl:pl-[35px] my-4 md:my-5 lg:my-6">
-                   <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">By which you may be personally identified, such as name, postal address, e-mail address, telephone number, social security number, or any other identifier by which you may be contacted online or offline ("personal information");</li>
+                   <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">By which you may be personally identified, such as name, postal address, e-mail address, telephone number, social security number, or any other identifier by which you may be contacted online or offline (&quot;personal information&quot;);</li>
                    <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">That is about you but individually does not identify you; and/or</li>
                    <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">About your internet connection, the equipment you use to access our Website, and usage details.</li>
                  </ul>
@@ -104,7 +103,7 @@ export default function PrivacyPolicy() {
                  </ul>
 
                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                   You also may provide information to be published or displayed (hereinafter, "posted") on public areas of the Website, or transmitted to other users of the Website or third parties (collectively, "User Contributions"). Your User Contributions are posted on and transmitted to others at your own risk. Although we limit access to certain pages, please be aware that no security measures are perfect or impenetrable. Additionally, we cannot control the actions of other users of the Website with whom you may choose to share your User Contributions. Therefore, we cannot and do not guarantee that your User Contributions will not be viewed by unauthorized persons.
+                   You also may provide information to be published or displayed (hereinafter, &quot;posted&quot;) on public areas of the Website, or transmitted to other users of the Website or third parties (collectively, &quot;User Contributions&quot;). Your User Contributions are posted on and transmitted to others at your own risk. Although we limit access to certain pages, please be aware that no security measures are perfect or impenetrable. Additionally, we cannot control the actions of other users of the Website with whom you may choose to share your User Contributions. Therefore, we cannot and do not guarantee that your User Contributions will not be viewed by unauthorized persons.
                  </p>
                </section>
 
@@ -166,11 +165,11 @@ export default function PrivacyPolicy() {
                  </ul>
 
                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                   We may also use your information to contact you about our own and third-parties' goods and services that may be of interest to you. If you do not want us to use your information in this way, please check the relevant box located on the form on which we collect your data (the registration form). For more information, see Choices About How We Use and Disclose Your Information.
+                   We may also use your information to contact you about our own and third-parties&apos; goods and services that may be of interest to you. If you do not want us to use your information in this way, please check the relevant box located on the form on which we collect your data (the registration form). For more information, see Choices About How We Use and Disclose Your Information.
                  </p>
 
                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                   We may use the information we have collected from you to enable us to display advertisements to our advertisers' target audiences. Even though we do not disclose your personal information for these purposes without your consent, if you click on or otherwise interact with an advertisement, the advertiser may assume that you meet its target criteria.
+                   We may use the information we have collected from you to enable us to display advertisements to our advertisers&apos; target audiences. Even though we do not disclose your personal information for these purposes without your consent, if you click on or otherwise interact with an advertisement, the advertiser may assume that you meet its target criteria.
                  </p>
                </section>
 
@@ -222,7 +221,7 @@ export default function PrivacyPolicy() {
                    We strive to provide you with choices regarding the personal information you provide to us.
                  </p>
                  <ul className="list-disc pl-6 md:pl-8 lg:pl-[30px] xl:pl-[35px] my-4 md:my-5 lg:my-6">
-                   <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">Tracking Technologies and Advertising. You can set your browser to refuse all or some browser cookies, or to alert you when cookies are being sent. To learn how you can manage your Flash cookie settings, visit the Flash player settings page on Adobe's website. If you disable or refuse cookies, please note that some parts of this site may then be inaccessible or not function properly.</li>
+                   <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">Tracking Technologies and Advertising. You can set your browser to refuse all or some browser cookies, or to alert you when cookies are being sent. To learn how you can manage your Flash cookie settings, visit the Flash player settings page on Adobe&apos;s website. If you disable or refuse cookies, please note that some parts of this site may then be inaccessible or not function properly.</li>
                    <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">Disclosure of Your Information for Third-Party Advertising. If you do not want us to share your personal information with unaffiliated or non-agent third parties for promotional purposes, you can opt out by checking the relevant box located on the form on which we collect your data (the registration form). You can also always opt out by checking or unchecking the relevant boxes or by sending us an email stating your request to contact@nationonedebtrelief.com.</li>
                  </ul>
 
@@ -230,12 +229,12 @@ export default function PrivacyPolicy() {
                    promotional purposes, you can opt out by checking the relevant box located on the form on which we collect your data (the registration form). You can also always opt out by checking or unchecking the relevant boxes or by sending us an email stating your request to contact@nationonedebtrelief.com.
                  </p>
                  <ul className="list-disc pl-6 md:pl-8 lg:pl-[30px] xl:pl-[35px] my-4 md:my-5 lg:my-6">
-                   <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">Promotional Offers from the Company. If you do not wish to have your contact information used by the Company to promote our own or third parties' products or services, you can opt out by checking the relevant box located on the form on which we collect your data (the registration form) or at any other time by sending us an email stating your request to www.nationonedebtrelief.com. If we have sent you a promotional email, you may send us a return email asking to be omitted from future email distributions.</li>
-                   <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">Targeted Advertising. If you do not want us to use information that we collect or that you provide to us to deliver advertisements according to our advertisers' target-audience preferences, you can opt out by checking the relevant box located on the form on which we collect your data (the registration form) or at any other time by sending us an email stating your request to contact@nationonedebtrelief.com.</li>
+                   <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">Promotional Offers from the Company. If you do not wish to have your contact information used by the Company to promote our own or third parties&apos; products or services, you can opt out by checking the relevant box located on the form on which we collect your data (the registration form) or at any other time by sending us an email stating your request to www.nationonedebtrelief.com. If we have sent you a promotional email, you may send us a return email asking to be omitted from future email distributions.</li>
+                   <li className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-3 md:mb-4 lg:mb-5 pl-2 md:pl-3 lg:pl-[5px]">Targeted Advertising. If you do not want us to use information that we collect or that you provide to us to deliver advertisements according to our advertisers&apos; target-audience preferences, you can opt out by checking the relevant box located on the form on which we collect your data (the registration form) or at any other time by sending us an email stating your request to contact@nationonedebtrelief.com.</li>
                  </ul>
 
                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                   We do not control third parties' collection or use of your information to serve interest-based advertising. However these third parties may provide you with ways to choose not to have your information collected or used in this way. You can opt out of receiving targeted ads from members of the Network Advertising Initiative ("NAI") on the NAI's website.
+                   We do not control third parties&apos; collection or use of your information to serve interest-based advertising. However these third parties may provide you with ways to choose not to have your information collected or used in this way. You can opt out of receiving targeted ads from members of the Network Advertising Initiative (&quot;NAI&quot;) on the NAI&apos;s website.
                  </p>
 
                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
@@ -254,7 +253,7 @@ export default function PrivacyPolicy() {
                 </p>
 
                 <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                  California's "shine the Light" law (Civil Code Section 1798.83) permits users of our App that are California residents to request certain information regarding our disclosure of personal information to third parties for their direct marketing purposes. To make such a request, please send an email to <a href="mailto:contact@nationonedebtrelief.com" className="text-[#003995] no-underline transition-colors duration-300 ease-in-out font-medium hover:text-[#F31B47] hover:underline">contact@nationonedebtrelief.com</a> or write us at: 12540 SW Leveton Dr, #P2150 Tualatin, OR, 97062.
+                  California&apos;s &quot;shine the Light&quot; law (Civil Code Section 1798.83) permits users of our App that are California residents to request certain information regarding our disclosure of personal information to third parties for their direct marketing purposes. To make such a request, please send an email to <a href="mailto:contact@nationonedebtrelief.com" className="text-[#003995] no-underline transition-colors duration-300 ease-in-out font-medium hover:text-[#F31B47] hover:underline">contact@nationonedebtrelief.com</a> or write us at: 12540 SW Leveton Dr, #P2150 Tualatin, OR, 97062.
                 </p>
               </section>
 
@@ -276,7 +275,7 @@ export default function PrivacyPolicy() {
               <section className="mb-6 md:mb-8 lg:mb-10">
                 <h2 className="text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-medium text-[#003995] mb-3 md:mb-4 lg:mb-5">Changes to our privacy policy</h2>
                 <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                  It is our policy to post any changes we make to our privacy policy on this page. If we make material changes to how we treat our users' personal information, we will notify you through a notice on the Website home page. The date the privacy policy was last revised is identified at the top of the page. You are responsible for ensuring we have an up-to-date active and deliverable email address for you, and for periodically visiting our Website and this privacy policy to check for any changes.
+                  It is our policy to post any changes we make to our privacy policy on this page. If we make material changes to how we treat our users&apos; personal information, we will notify you through a notice on the Website home page. The date the privacy policy was last revised is identified at the top of the page. You are responsible for ensuring we have an up-to-date active and deliverable email address for you, and for periodically visiting our Website and this privacy policy to check for any changes.
                 </p>
               </section>
 

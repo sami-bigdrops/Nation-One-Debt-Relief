@@ -1,6 +1,6 @@
 "use client"
 
-import Image from "next/image";
+
 import Navbar from "../ndr/navbar";
 import Hero from "../ndr/hero";
 import Steps from "../ndr/steps";

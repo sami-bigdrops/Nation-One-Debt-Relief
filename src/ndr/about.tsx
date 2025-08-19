@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 export default function About() {
   return (
@@ -26,9 +27,11 @@ export default function About() {
                   background: "#e5eaf2"
                 }}
               >
-                <img
+                <Image
                   src="/about-1.webp"
                   alt="About Nation One Debt Relief"
+                  width={400}
+                  height={400}
                   className="w-full h-full object-cover"
                   style={{
                     width: "100%",

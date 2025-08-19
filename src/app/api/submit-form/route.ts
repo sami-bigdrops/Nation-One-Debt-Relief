@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     let result;
     try {
       result = JSON.parse(rawResponse);
-    } catch (parseError) {
+    } catch {
       // Even if parsing fails, we'll treat it as success
       result = { status: 'ACCEPTED' };
     }
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
       };
       return NextResponse.json(errorResponse, { status: 400 })
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

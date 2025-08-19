@@ -6,6 +6,17 @@ interface TrustedFormProps {
   onCertUrlReady: (certUrl: string) => void
 }
 
+// TypeScript interface for TrustedForm window properties
+interface TrustedFormWindow extends Window {
+  field?: string
+  provideReferrer?: boolean
+  sandbox?: boolean
+  TrustedForm?: {
+    getCertUrl(): string
+  }
+  xxTrustedFormCertUrl?: string
+}
+
 export default function TrustedForm({ onCertUrlReady }: TrustedFormProps) {
   const certUrlRef = useRef<string>('')
 
@@ -24,12 +35,12 @@ export default function TrustedForm({ onCertUrlReady }: TrustedFormProps) {
       tf.src = 'https://api.trustedform.com/trustedform.js'
 
       // Set configuration variables BEFORE loading script
-      ;(window as any).field = process.env.NEXT_PUBLIC_TRUSTEDFORM_FIELD || 'xxTrustedFormCertUrl'
-      ;(window as any).provideReferrer = process.env.NEXT_PUBLIC_TRUSTEDFORM_PROVIDE_REFERRER === 'true' || false
+      ;(window as TrustedFormWindow).field = process.env.NEXT_PUBLIC_TRUSTEDFORM_FIELD || 'xxTrustedFormCertUrl'
+      ;(window as TrustedFormWindow).provideReferrer = process.env.NEXT_PUBLIC_TRUSTEDFORM_PROVIDE_REFERRER === 'true' || false
 
       // Optional: Enable sandbox mode for testing
       if (process.env.NEXT_PUBLIC_TRUSTEDFORM_SANDBOX === 'true') {
-        ;(window as any).sandbox = true
+        ;(window as TrustedFormWindow).sandbox = true
       }
 
       // Insert script
@@ -46,17 +57,17 @@ export default function TrustedForm({ onCertUrlReady }: TrustedFormProps) {
       let certUrl = document.getElementById('xxTrustedFormCertUrl_0')?.getAttribute('value')
       
       // Method 2: Try getting it from the window object
-      if (!certUrl && (window as any).TrustedForm) {
+      if (!certUrl && (window as TrustedFormWindow).TrustedForm) {
         try {
-          certUrl = (window as any).TrustedForm.getCertUrl()
-        } catch (e) {
+          certUrl = (window as TrustedFormWindow).TrustedForm?.getCertUrl() || ''
+        } catch {
           // TrustedForm.getCertUrl() not available yet
         }
       }
       
       // Method 3: Try getting it from the window object properties
-      if (!certUrl && (window as any).xxTrustedFormCertUrl) {
-        certUrl = (window as any).xxTrustedFormCertUrl
+      if (!certUrl && (window as TrustedFormWindow).xxTrustedFormCertUrl) {
+        certUrl = (window as TrustedFormWindow).xxTrustedFormCertUrl
       }
       
       // Method 4: Try getting it from the script tag
@@ -74,7 +85,7 @@ export default function TrustedForm({ onCertUrlReady }: TrustedFormProps) {
       // Method 5: Check for any element with cert URL pattern
       if (!certUrl) {
         const elements = document.querySelectorAll('[id*="TrustedForm"], [id*="trustedform"]')
-        elements.forEach(el => {
+        elements.forEach((el: Element) => {
           const value = el.getAttribute('value')
           if (value && value.includes('trustedform.com')) {
             certUrl = value

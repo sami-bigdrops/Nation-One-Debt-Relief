@@ -123,7 +123,8 @@ export default function Hero() {
         throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
+      // Remove unused result variable
+      await response.json();
 
       setSubmitSuccess(true);
       reset();
@@ -163,7 +164,7 @@ export default function Hero() {
             <div className="hidden w-full h-px bg-white md:block"></div>
             <div className="hidden md:block">
               <p className="text-sm md:text-base lg:text-lg xl:text-xl xl:mb-4 text-white">
-                From credit cards to medical bills - whatever your debt, we're
+                From credit cards to medical bills - whatever your debt, we&apos;re
                 here to help you become debt-free and live stress-free.
               </p>
             </div>

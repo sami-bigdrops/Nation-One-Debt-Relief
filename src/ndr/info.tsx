@@ -60,7 +60,7 @@ export default function Info() {
 
               <div className="info-text text-left">
                 <p className="text-xs md:text-sm lg:text-base xl:text-lg  font-normal leading-relaxed" style={{ color: '#1E1E1E' }}>
-                  Discover our 3-step plan to become debt-free and don't waste another day worrying about your debt.
+                  Discover our 3-step plan to become debt-free and don&apos;t waste another day worrying about your debt.
                 </p>
               </div>
 

@@ -31,7 +31,7 @@ export default function Steps() {
                   </div>
                   <div className="step-description">
                     <p className="text-sm font-normal text-center m-0 font-light md:text-sm lg:text-base " style={{ color: '#1E1E1E' }}>
-                      Evaluate the client's financial situation at no cost, analyzing debt, income, and financial goals for the best possible relief options.
+                      Evaluate the client&apos;s financial situation at no cost, analyzing debt, income, and financial goals for the best possible relief options.
                     </p>
                   </div>
                 </div>
