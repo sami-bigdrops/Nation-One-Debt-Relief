@@ -143,7 +143,7 @@ export default function PrivacyPolicy() {
                  </p>
 
                  <p className="text-xs md:text-sm lg:text-base xl:text-lg leading-[1.6] md:leading-[1.7] lg:leading-[1.8] text-[#1E1E1E] mb-4 md:mb-5 lg:mb-6">
-                   We do not control these third parties' tracking technologies or how they may be used. If you have any questions about an advertisement or other targeted content, you should contact the responsible provider directly. For information about how you can opt out of receiving targeted advertising from many providers, see Choices About How We Use and Disclose Your Information.
+                   We do not control these third parties&apos; tracking technologies or how they may be used. If you have any questions about an advertisement or other targeted content, you should contact the responsible provider directly. For information about how you can opt out of receiving targeted advertising from many providers, see Choices About How We Use and Disclose Your Information.
                  </p>
                </section>
 

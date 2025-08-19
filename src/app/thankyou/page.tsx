@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import Image from 'next/image'
 
 import { useSearchParams } from 'next/navigation'
@@ -11,7 +11,7 @@ interface UtmParams {
   utm_s1: string
 }
 
-export default function ThankYouPage() {
+function ThankYouContent() {
   const searchParams = useSearchParams()
   const [utmParams, setUtmParams] = useState<UtmParams>({
     utm_source: '',
@@ -146,5 +146,13 @@ export default function ThankYouPage() {
         </div>
       </section>
     </main>
+  )
+}
+
+export default function ThankYouPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ThankYouContent />
+    </Suspense>
   )
 }
