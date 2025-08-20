@@ -5,6 +5,25 @@ import Image from 'next/image'
 
 import { useSearchParams } from 'next/navigation'
 
+const ads = [
+  {
+    image: '/nerdwallet.png',
+    link: 'https://www.platinum-home-track.com/28KL6/3GHXJS7/?sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}&sub3=${utmParams.utm_s1}'
+  },
+  {
+    image: '/adt.png',
+    link: 'https://www.platinum-home-track.com/28KL6/49FHNSP/?sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}&sub3=${utmParams.utm_s1}'
+  },
+  {
+    image: '/ahs.jpg',
+    link: 'https://www.platinum-home-track.com/28KL6/49FHNSP/?uid=113&sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}&sub3=${utmParams.utm_s1}'
+  },
+  {
+    image: '/arw-home.png',
+    link: 'https://www.platinum-home-track.com/28KL6/49FHNSP/?uid=114&sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}&sub3=${utmParams.utm_s1}'
+  }
+]
+
 interface UtmParams {
   utm_source: string
   utm_id: string
@@ -64,23 +83,23 @@ function ThankYouContent() {
   return (
     <main>
       {/* Thank You Section */}
-      <section id="thankyou" className="py-16 bg-gradient-to-b from-blue-50 to-white">
+      <section id="thankyou" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="thankyou-content text-center max-w-2xl mx-auto">
             <div className="mb-8">
-              <Image 
-                src="/checked.png" 
-                alt="Thank You Image" 
-                width={80} 
-                height={80}
-                className="mx-auto"
-              />
             </div>
-            <h3 className="text-3xl font-bold text-gray-800 mb-4">
+            <h3 className="text-4xl font-bold text-gray-800 mb-12">
               Thank you!
             </h3>
+            <Image 
+                src="/national-debt-relief.jpg" 
+                alt="Thank You Image" 
+                width={100} 
+                height={100}
+                className="mx-auto w-80 h-auto mb-8"
+              />
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Thank you for requesting information from Nation One Debt Relief. You will be contacted by a Customer Specialist shortly.
+              Congratulations! You have been matched with our partner. You will be contacted by a Debt Relief Specialist shortly.
             </p>
             <div className="thankyou-contact-container bg-white p-6 rounded-lg shadow-md border border-gray-200">
               <h4 className="text-xl font-semibold text-gray-800 mb-3">
@@ -105,42 +124,31 @@ function ThankYouContent() {
       <div className="thankyou-divider h-1 bg-gradient-to-r from-red-500 to-blue-600"></div>
 
       {/* Ad Section */}
-      <section id="ad" className="py-16 bg-gray-50">
+      <section id="ad" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="ad-content text-center max-w-4xl mx-auto">
             <p className="text-xl text-gray-700 mb-8 font-medium">
-              In addition to debt relief, here are 2 great offers.
+              In addition to debt relief, here are {ads.length} great offers.
             </p>
 
             <div className="ad-images grid grid-cols-1 md:grid-cols-1 gap-8">
-              <a 
-                href={`https://www.platinum-home-track.com/28KL6/49FHNSP/?uid=112&sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}&sub3=${utmParams.utm_s1}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block transition-transform hover:scale-105"
+              {ads.map((ad, index) => (
+                <a 
+                  key={index}
+                  href={ad.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block transition-transform hover:scale-105"
               >
                 <Image 
-                  src="/accredited.jpg" 
+                  src={ad.image} 
                   alt="Ads Image" 
                   width={400} 
                   height={300}
                   className="w-full h-auto rounded-lg shadow-md"
-                />
-              </a>
-              <a 
-                href={`https://www.platinum-home-track.com/28KL6/3GHXJS7/?sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}&sub3=${utmParams.utm_s1}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block transition-transform hover:scale-105"
-              >
-                <Image 
-                  src="/nerdwallet.png" 
-                  alt="Ads Image" 
-                  width={400} 
-                  height={300}
-                  className="w-full h-auto rounded-lg shadow-md"
-                />
-              </a>
+                    />
+                </a>
+              ))}
             </div>
           </div>
         </div>

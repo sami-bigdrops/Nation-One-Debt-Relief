@@ -273,21 +273,6 @@ export default function Hero() {
                   Start here for your FREE Quote
                 </h3>
 
-                {/* Success Message */}
-                {submitSuccess && (
-                  <div className="w-full p-3 bg-green-100 border border-green-400 text-green-700 rounded text-sm text-center">
-                    Thank you! Your form has been submitted successfully.
-                    Redirecting to thank you page...
-                  </div>
-                )}
-
-                {/* Error Message */}
-                {submitError && (
-                  <div className="w-full p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center">
-                    {submitError}
-                  </div>
-                )}
-
                 <div className="form-group">
                   {/* TrustedForm Integration */}
                   <TrustedForm onCertUrlReady={setTrustedFormCertUrl} />
