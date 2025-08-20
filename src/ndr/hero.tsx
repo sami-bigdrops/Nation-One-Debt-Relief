@@ -23,8 +23,6 @@ type FormData = z.infer<typeof formSchema>;
 export default function Hero() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [trustedFormCertUrl, setTrustedFormCertUrl] = useState("");
   const [subid1, setSubid1] = useState("");
   const [subid2, setSubid2] = useState("");
@@ -99,7 +97,6 @@ export default function Hero() {
 
     const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    setSubmitError(null);
 
     try {
       const submissionData = {
@@ -123,10 +120,14 @@ export default function Hero() {
         throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
-      // Remove unused result variable
-      await response.json();
+      const result = await response.json();
 
-      setSubmitSuccess(true);
+      // Store access token in localStorage for thank you page access
+      if (result.accessToken && result.expiresAt) {
+        localStorage.setItem('thankyou_token', result.accessToken);
+        localStorage.setItem('thankyou_expires', result.expiresAt.toString());
+      }
+
       reset();
 
       // Redirect to thank you page after 2 seconds
@@ -135,11 +136,13 @@ export default function Hero() {
       }, 2000);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      setSubmitError(errorMessage);
-
+      
       if (process.env.NODE_ENV === 'development') {
         console.error("Form submission error:", error);
       }
+      
+      // Show error to user (you could add error state if needed)
+      alert(`Submission failed: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }

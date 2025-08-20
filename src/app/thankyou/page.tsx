@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, Suspense } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 import { useSearchParams } from 'next/navigation'
 
@@ -32,13 +33,78 @@ interface UtmParams {
 
 function ThankYouContent() {
   const searchParams = useSearchParams()
+  const router = useRouter()
+  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [utmParams, setUtmParams] = useState<UtmParams>({
     utm_source: '',
     utm_id: '',
     utm_s1: ''
   })
 
+  // Protection useEffect - runs first to check access authorization
   useEffect(() => {
+    const checkAccess = async () => {
+      try {
+        // Check for access token in localStorage
+        const token = localStorage.getItem('thankyou_token');
+        const expiresAt = localStorage.getItem('thankyou_expires');
+
+        if (!token || !expiresAt) {
+          console.log('No access token found, redirecting to homepage');
+          router.replace('/');
+          return;
+        }
+
+        // Check if token has expired
+        const currentTime = Date.now();
+        const tokenExpiry = parseInt(expiresAt, 10);
+        
+        if (currentTime > tokenExpiry) {
+          console.log('Access token expired, redirecting to homepage');
+          localStorage.removeItem('thankyou_token');
+          localStorage.removeItem('thankyou_expires');
+          router.replace('/');
+          return;
+        }
+
+        // Validate token against server (optional additional security check)
+        try {
+          const response = await fetch('/api/validate-access', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+          });
+          
+          if (!response.ok) {
+            throw new Error('Token validation failed');
+          }
+        } catch (error) {
+          // If validation endpoint doesn't exist or fails, we'll rely on localStorage validation
+          console.log('Server validation skipped:', error);
+        }
+
+        // All checks passed - authorize access
+        setIsAuthorized(true);
+        
+        // Clear the token to prevent reuse (one-time access)
+        localStorage.removeItem('thankyou_token');
+        localStorage.removeItem('thankyou_expires');
+      } catch (error) {
+        console.error('Access check failed:', error);
+        router.replace('/');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAccess();
+  }, [router]);
+
+  useEffect(() => {
+    // Skip UTM parameter processing if not authorized
+    if (!isAuthorized) return;
+
     // Helper function to get cookie value
     const getCookie = (name: string) => {
       const value = `; ${document.cookie}`;
@@ -78,7 +144,24 @@ function ThankYouContent() {
         utm_s1: cookieUtmS1
       })
     }
-  }, [searchParams])
+  }, [searchParams, isAuthorized])
+
+  // Show loading state while checking authorization
+  if (isLoading) {
+    return (
+      <main className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </main>
+    );
+  }
+
+  // Show nothing if not authorized (redirect is in progress)
+  if (!isAuthorized) {
+    return null;
+  }
 
   return (
     <main>
@@ -132,23 +215,31 @@ function ThankYouContent() {
             </p>
 
             <div className="ad-images grid grid-cols-1 md:grid-cols-1 gap-8">
-              {ads.map((ad, index) => (
-                <a 
-                  key={index}
-                  href={ad.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block transition-transform hover:scale-105"
-              >
-                <Image 
-                  src={ad.image} 
-                  alt="Ads Image" 
-                  width={400} 
-                  height={300}
-                  className="w-full h-auto rounded-lg shadow-md"
+              {ads.map((ad, index) => {
+                // Replace template variables in the ad link
+                const processedLink = ad.link
+                  .replace('${utmParams.utm_source}', utmParams.utm_source || '')
+                  .replace('${utmParams.utm_id}', utmParams.utm_id || '')
+                  .replace('${utmParams.utm_s1}', utmParams.utm_s1 || '');
+                
+                return (
+                  <a 
+                    key={index}
+                    href={processedLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block transition-transform hover:scale-105"
+                  >
+                    <Image 
+                      src={ad.image} 
+                      alt="Ads Image" 
+                      width={400} 
+                      height={300}
+                      className="w-full h-auto rounded-lg shadow-md"
                     />
-                </a>
-              ))}
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>

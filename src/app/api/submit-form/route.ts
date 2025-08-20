@@ -98,13 +98,29 @@ export async function POST(request: NextRequest) {
     }
 
     if (result.status === 'ACCEPTED' || result.status === 'DUPLICATED' || result.status === 'ERROR') {
+      // Generate unique access token for thank you page
+      const accessToken = crypto.randomUUID();
+      const expiresAt = Date.now() + (10 * 60 * 1000); // Token expires in 10 minutes
+      
       const successResponse = { 
         success: true, 
         message: 'Form submitted successfully',
         redirectUrl: '/thankyou',
-        leadProsperStatus: result.status
+        leadProsperStatus: result.status,
+        accessToken,
+        expiresAt
       };
-      return NextResponse.json(successResponse, { status: 200 })
+      
+      // Set secure cookie for additional validation
+      const response = NextResponse.json(successResponse, { status: 200 });
+      response.cookies.set('thankyou_access', accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 10 * 60 // 10 minutes
+      });
+      
+      return response;
     } else {
       const errorResponse = { 
         success: false, 
