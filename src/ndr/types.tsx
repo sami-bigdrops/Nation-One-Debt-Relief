@@ -2,6 +2,22 @@ import React from 'react'
 import Image from 'next/image'
 
 export default function Types() {
+  const handleCTAClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    
+    // Find the navbar based on screen size
+    const navbar = window.innerWidth >= 768 ? 
+      document.querySelector('#desktop-navbar') :
+      document.querySelector('#mobile-navbar')
+    
+    if (navbar) {
+      navbar.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  }
+
   return (
     <div className="p-4 md:px-20 md:py-8 mt-4">
       <div className="container mx-auto">
@@ -73,6 +89,15 @@ export default function Types() {
 
           <div className="type-description text-center">
             <p className="text-xs md:text-sm lg:text-base 2xl:text-lg font-normal text-center" style={{ color: '#1E1E1E' }}>...And Many More!!</p>
+          </div>
+
+          <div className="cta-btn-container w-full flex items-center justify-center m-0 mx-auto">
+            <button 
+              onClick={handleCTAClick}
+              className="cta-btn w-full md:w-max bg-[#BF0A2F] mt-6 py-4 px-5 flex rounded-full justify-center items-center text-xs md:text-base lg:text-lg text-white font-normal cursor-pointer border-none relative overflow-hidden bg-gradient-to-r from-[#BF0A2F] to-[#DF413F] before:content-[''] before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent before:animate-[shimmer_1.5s_infinite]"
+            >
+              Get Your Debt Relief Now!
+            </button>
           </div>
         </div>
       </div>

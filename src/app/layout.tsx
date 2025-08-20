@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Onest } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const onest = Onest({
   variable: "--font-onest",
@@ -81,6 +83,8 @@ export default function RootLayout({
         style={{ fontFamily: 'var(--font-onest)' }}
         suppressHydrationWarning
       >
+        <Analytics />
+        <SpeedInsights />
         {children}
       </body>
     </html>

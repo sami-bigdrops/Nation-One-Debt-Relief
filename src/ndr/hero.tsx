@@ -157,7 +157,7 @@ export default function Hero() {
         <div className="w-full h-full flex flex-col justify-center items-center gap-5 lg:gap-10 md:flex-row md:justify-between">
           <div className="w-full flex flex-col justify-center items-center md:w-[60%] md:gap-5">
             <div className="main-title">
-              <h1 className="text-2xl font-medium text-white text-center md:text-3xl xl:mb-4 lg:text-4xl xl:text-5xl md:text-left">
+              <h1 className="text-2xl font-bold text-white text-center md:text-3xl xl:mb-4 lg:text-4xl xl:text-5xl md:text-left">
                 See if you qualify for debt relief and regain control!
               </h1>
             </div>
@@ -402,19 +402,8 @@ export default function Hero() {
                     <option value="$90,000 - $99,999">$90,000 - $99,999</option>
                     <option value="Above $100,000+">Above $100,000+</option>
                   </select>
-                </div>
-                <div className="w-full text-xs lg:text-sm text-gray-400 text-justify">
-                  <p>
-                    By submitting this form, I agree to the Nation One Debt
-                    Relief Terms of Use and Privacy Policy. I authorize Nation
-                    One Debt Relief and its partners to send me marketing text
-                    messages or phone calls at the number provided, including
-                    those made with an autodialer. Standard message and data
-                    rates may apply. Message frequency varies. Opt-out anytime
-                    by replying STOP or using the unsubscribe link.
-                  </p>
-                </div>
-                <button
+
+                  <button
                   type="submit"
                   disabled={isSubmitting}
                   className={`w-full bg-gradient-to-r from-[#BF0A2F] to-[#DF413F] p-4 py-3 px-5 rounded-full flex justify-center items-center text-sm lg:text-lg text-white font-normal cursor-pointer border-none relative overflow-hidden mt-2.5 before:content-[''] before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent before:animate-[shimmer_1.5s_infinite] ${
@@ -430,6 +419,19 @@ export default function Hero() {
                     "Submit"
                   )}
                 </button>
+                </div>
+
+                <div className="w-full text-xs lg:text-sm text-gray-400 text-justify">
+                  <p>
+                    By submitting this form, I agree to the Nation One Debt
+                    Relief Terms of Use and Privacy Policy. I authorize Nation
+                    One Debt Relief and its partners to send me marketing text
+                    messages or phone calls at the number provided, including
+                    those made with an autodialer. Standard message and data
+                    rates may apply. Message frequency varies. Opt-out anytime
+                    by replying STOP or using the unsubscribe link.
+                  </p>
+                </div>
                 
                 {/* Debug Button - Remove in production */}
                 

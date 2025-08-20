@@ -2,8 +2,23 @@ import React from 'react'
 import Image from 'next/image'
 
 export default function About() {
+  const handleCTAClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    
+    // Find the navbar based on screen size
+    const navbar = window.innerWidth >= 768 ? 
+      document.querySelector('#desktop-navbar') :
+      document.querySelector('#mobile-navbar')
+    
+    if (navbar) {
+      navbar.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  }
   return (
-    <div className="bg-[rgba(210,227,255,0.9)]  mt-10">
+    <div className="bg-[rgba(210,227,255,0.9)]  py-10">
       <div className="container mx-auto p-4 ">
         <div className="content flex flex-col items-center justify-center gap-5 md:gap-7">
           <div className="title-container md:mt-7 lg:mt-8 2xl:mt-10">
@@ -116,6 +131,14 @@ export default function About() {
                 }}
               ></div>
             </div>
+          </div>
+          <div className="cta-btn-container w-full flex items-center justify-center m-0 mx-auto">
+            <button 
+              onClick={handleCTAClick}
+              className="cta-btn w-full md:w-max bg-[#BF0A2F] mt-6 py-4 px-5 flex rounded-full justify-center items-center text-xs md:text-base lg:text-lg text-white font-normal cursor-pointer border-none relative overflow-hidden bg-gradient-to-r from-[#BF0A2F] to-[#DF413F] before:content-[''] before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent before:animate-[shimmer_1.5s_infinite]"
+            >
+              Get Your Debt Relief Now!
+            </button>
           </div>
         </div>
       </div>

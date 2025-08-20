@@ -1,6 +1,21 @@
 import React from 'react'
 
 export default function Choose() {
+  const handleCTAClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    
+    // Find the navbar based on screen size
+    const navbar = window.innerWidth >= 768 ? 
+      document.querySelector('#desktop-navbar') :
+      document.querySelector('#mobile-navbar')
+    
+    if (navbar) {
+      navbar.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  }
   return (
     <div
       className="w-full h-full px-4 py-5 md:px-7 md:py-8 xl:py-22"
@@ -19,7 +34,7 @@ export default function Choose() {
             </div>
 
             <div className="choose-btn flex items-center justify-center w-full h-full max-w-50 md:max-w-60 2xl:max-w-110 ">
-              <div className="ch-btn w-full bg-[#BF0A2F] py-2 px-5 2xl:px-8 2xl:py-5 flex rounded-[28px] 2xl:rounded-full justify-center items-center text-base md:text-xl xl:text-3xl 2xl:text-5xl text-white font-semibold border-none relative overflow-hidden text-shadow-[5px_8px_10px_rgba(0,0,0,0.5)] bg-gradient-to-r from-[#BF0A2F] to-[#DF413F]">100+</div>
+              <div onClick={handleCTAClick} className="ch-btn w-full bg-[#BF0A2F] py-2 px-5 2xl:px-8 2xl:py-5 flex rounded-[28px] 2xl:rounded-full justify-center items-center text-base md:text-xl xl:text-3xl 2xl:text-5xl text-white font-semibold border-none relative overflow-hidden text-shadow-[5px_8px_10px_rgba(0,0,0,0.5)] bg-gradient-to-r from-[#BF0A2F] to-[#DF413F] cursor-default hover:scale-105 transition-all duration-300">100+</div>
             </div>
 
             <div className="choose-title-2">

@@ -114,13 +114,13 @@ function ThankYouContent() {
 
             <div className="ad-images grid grid-cols-1 md:grid-cols-1 gap-8">
               <a 
-                href={`https://www.platinum-home-track.com/28KL6/49FHNSP/?uid=112&sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}`}
+                href={`https://www.platinum-home-track.com/28KL6/49FHNSP/?uid=112&sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}&sub3=${utmParams.utm_s1}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block transition-transform hover:scale-105"
               >
                 <Image 
-                  src="/ad3.jpg" 
+                  src="/accredited.jpg" 
                   alt="Ads Image" 
                   width={400} 
                   height={300}
@@ -128,13 +128,13 @@ function ThankYouContent() {
                 />
               </a>
               <a 
-                href={`https://www.platinum-home-track.com/28KL6/49FHNSP/?uid=114&sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}`}
+                href={`https://www.platinum-home-track.com/28KL6/3GHXJS7/?sub1=ndr_${utmParams.utm_source}&sub2=${utmParams.utm_id}&sub3=${utmParams.utm_s1}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block transition-transform hover:scale-105"
               >
                 <Image 
-                  src="/ad1.png" 
+                  src="/nerdwallet.png" 
                   alt="Ads Image" 
                   width={400} 
                   height={300}
