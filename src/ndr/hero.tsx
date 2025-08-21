@@ -60,6 +60,10 @@ export default function Hero() {
       if (utmSource) setCookie('subid1', utmSource);
       if (utmId) setCookie('subid2', utmId);
       if (utmS1) setCookie('subid3', utmS1);
+      
+      // Clean the URL by removing UTM parameters
+      const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
     } else {
       // If no URL parameters, try to read from cookies
       utmSource = getCookie('subid1') || "";
