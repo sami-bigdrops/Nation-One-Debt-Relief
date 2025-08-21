@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 interface TrustedFormProps {
   onCertUrlReady: (certUrl: string) => void
@@ -94,8 +94,10 @@ export default function TrustedForm({ onCertUrlReady }: TrustedFormProps) {
       }
       
       if (certUrl && certUrl !== certUrlRef.current) {
-        certUrlRef.current = certUrl
-        onCertUrlReady(certUrl)
+        // Convert ping.trustedform.com URLs to cert.trustedform.com URLs
+        const correctedCertUrl = certUrl.replace('ping.trustedform.com', 'cert.trustedform.com')
+        certUrlRef.current = correctedCertUrl
+        onCertUrlReady(correctedCertUrl)
         return
       }
     }
@@ -118,8 +120,8 @@ export default function TrustedForm({ onCertUrlReady }: TrustedFormProps) {
   return (
     <>
       {/* Hidden TrustedForm fields - No name attributes to prevent URL pollution */}
-      <input type="hidden" id="xxTrustedFormCertUrl_0" />
-      <input type="hidden" id="xxTrustedFormToken_0" />
+      <input type="hidden" id="xxTrustedFormCertUrl_0" value="" />
+      <input type="hidden" id="xxTrustedFormToken_0" value="" />
     </>
   )
 }

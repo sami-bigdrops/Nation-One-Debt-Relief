@@ -281,9 +281,9 @@ export default function Hero() {
                   <TrustedForm onCertUrlReady={setTrustedFormCertUrl} />
 
                   {/* UTM Parameters - No name attributes to prevent URL pollution */}
-                  <input type="hidden" id="hidden_subid1" />
-                  <input type="hidden" id="hidden_subid2" />
-                  <input type="hidden" id="hidden_subid3" />
+                  <input type="hidden" id="hidden_subid1" value="" />
+                  <input type="hidden" id="hidden_subid2" value="" />
+                  <input type="hidden" id="hidden_subid3" value="" />
 
                   <input
                     type="text"
