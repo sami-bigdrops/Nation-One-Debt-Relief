@@ -1,127 +1,179 @@
-'use client'
+'use client';
 
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react';
 
 interface TrustedFormProps {
-  onCertUrlReady: (certUrl: string) => void
+  onCertificateReady?: (certUrl: string, token: string) => void;
+  onCertUrlReady?: (certUrl: string) => void;
+  enableSandbox?: boolean;
+  provideReferrer?: boolean;
+  timeout?: number;
 }
 
-// TypeScript interface for TrustedForm window properties
-interface TrustedFormWindow extends Window {
-  field?: string
-  provideReferrer?: boolean
-  sandbox?: boolean
-  TrustedForm?: {
-    getCertUrl(): string
+declare global {
+  interface Window {
+    field?: string;
+    provideReferrer?: boolean;
+    sandbox?: boolean;
+    TF_READY?: boolean;
   }
-  xxTrustedFormCertUrl?: string
 }
 
-export default function TrustedForm({ onCertUrlReady }: TrustedFormProps) {
-  const certUrlRef = useRef<string>('')
+const TrustedForm: React.FC<TrustedFormProps> = ({
+  onCertificateReady,
+  onCertUrlReady,
+  enableSandbox = false,
+  provideReferrer = false,
+  timeout = 2000
+}) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const scriptRef = useRef<HTMLScriptElement | null>(null);
+  const certUrlRef = useRef<HTMLInputElement>(null);
+  const tokenRef = useRef<HTMLInputElement>(null);
+
+  const initTrustedForm = () => {
+    // Avoid loading multiple times
+    if (scriptRef.current || document.querySelector('script[src*="trustedform.js"]')) {
+      return;
+    }
+
+    // Create script element
+    const tf = document.createElement('script');
+    tf.type = 'text/javascript';
+    tf.async = true;
+    tf.src = 'https://api.trustedform.com/trustedform.js';
+    
+    // Set configuration variables before loading script
+    window.field = 'xxTrustedFormCertUrl';
+    window.provideReferrer = provideReferrer;
+    
+    if (enableSandbox) {
+      window.sandbox = true;
+    }
+
+    // Add load event listener
+    tf.onload = () => {
+      setIsLoaded(true);
+    };
+
+    tf.onerror = () => {
+      console.error('Failed to load TrustedForm script');
+    };
+
+    // Insert script
+    const firstScript = document.getElementsByTagName('script')[0];
+    if (firstScript && firstScript.parentNode) {
+      firstScript.parentNode.insertBefore(tf, firstScript);
+      scriptRef.current = tf;
+    }
+  };
+
+  const getCertificateData = (): Promise<{ certUrl: string; token: string }> => {
+    return new Promise((resolve) => {
+      const checkForCertificate = () => {
+        const certUrl = certUrlRef.current?.value || '';
+        const token = tokenRef.current?.value || '';
+        
+        if (certUrl) {
+          resolve({ certUrl, token });
+          return;
+        }
+
+        // Check again after a short delay
+        setTimeout(checkForCertificate, 100);
+      };
+
+      // Start checking immediately
+      checkForCertificate();
+
+      // Fallback timeout
+      setTimeout(() => {
+        const certUrl = certUrlRef.current?.value || '';
+        const token = tokenRef.current?.value || '';
+        resolve({ certUrl, token });
+      }, timeout);
+    });
+  };
 
   useEffect(() => {
-    // Initialize TrustedForm
-    const initTrustedForm = () => {
-      // Check if script is already loaded
-      if (document.querySelector('script[src*="trustedform.js"]')) {
-        return
-      }
-      
-      // Create script element
-      const tf = document.createElement('script')
-      tf.type = 'text/javascript'
-      tf.async = true
-      tf.src = 'https://api.trustedform.com/trustedform.js'
+    initTrustedForm();
 
-      // Set configuration variables BEFORE loading script
-      ;(window as TrustedFormWindow).field = process.env.NEXT_PUBLIC_TRUSTEDFORM_FIELD || 'xxTrustedFormCertUrl'
-      ;(window as TrustedFormWindow).provideReferrer = process.env.NEXT_PUBLIC_TRUSTEDFORM_PROVIDE_REFERRER === 'true' || false
-
-      // Optional: Enable sandbox mode for testing
-      if (process.env.NEXT_PUBLIC_TRUSTEDFORM_SANDBOX === 'true') {
-        ;(window as TrustedFormWindow).sandbox = true
-      }
-
-      // Insert script
-      const s = document.getElementsByTagName('script')[0]
-      s.parentNode?.insertBefore(tf, s)
-    }
-
-    // Initialize TrustedForm
-    initTrustedForm()
-
-    // Check for cert URL every 100ms for up to 10 seconds
-    const checkCertUrl = () => {
-      // Try multiple ways to get the certificate URL
-      let certUrl = document.getElementById('xxTrustedFormCertUrl_0')?.getAttribute('value')
-      
-      // Method 2: Try getting it from the window object
-      if (!certUrl && (window as TrustedFormWindow).TrustedForm) {
-        try {
-          certUrl = (window as TrustedFormWindow).TrustedForm?.getCertUrl() || ''
-        } catch {
-          // TrustedForm.getCertUrl() not available yet
-        }
-      }
-      
-      // Method 3: Try getting it from the window object properties
-      if (!certUrl && (window as TrustedFormWindow).xxTrustedFormCertUrl) {
-        certUrl = (window as TrustedFormWindow).xxTrustedFormCertUrl
-      }
-      
-      // Method 4: Try getting it from the script tag
-      if (!certUrl) {
-        const script = document.querySelector('script[src*="trustedform.js"]')
-        if (script) {
-          const scriptContent = script.innerHTML
-          const match = scriptContent.match(/certUrl["']?\s*:\s*["']([^"']+)["']/)
-          if (match) {
-            certUrl = match[1]
+    // Optional callbacks when certificate is ready
+    if (onCertificateReady || onCertUrlReady) {
+      const interval = setInterval(() => {
+        const certUrl = certUrlRef.current?.value;
+        const token = tokenRef.current?.value;
+        
+        if (certUrl) {
+          // Call the appropriate callback
+          if (onCertificateReady && token) {
+            onCertificateReady(certUrl, token);
+          } else if (onCertUrlReady) {
+            onCertUrlReady(certUrl);
           }
+          clearInterval(interval);
         }
-      }
-      
-      // Method 5: Check for any element with cert URL pattern
-      if (!certUrl) {
-        const elements = document.querySelectorAll('[id*="TrustedForm"], [id*="trustedform"]')
-        elements.forEach((el: Element) => {
-          const value = el.getAttribute('value')
-          if (value && value.includes('trustedform.com')) {
-            certUrl = value
-          }
-        })
-      }
-      
-      if (certUrl && certUrl !== certUrlRef.current) {
-        // Convert ping.trustedform.com URLs to cert.trustedform.com URLs
-        const correctedCertUrl = certUrl.replace('ping.trustedform.com', 'cert.trustedform.com')
-        certUrlRef.current = correctedCertUrl
-        onCertUrlReady(correctedCertUrl)
-        return
-      }
-    }
+      }, 500);
 
-    const interval = setInterval(checkCertUrl, 100)
-    const timeout = setTimeout(() => {
-      clearInterval(interval)
-      // If no cert URL after 10 seconds, call with empty string
-      if (!certUrlRef.current) {
-        onCertUrlReady('')
-      }
-    }, 10000)
+      // Clear interval after timeout
+      setTimeout(() => clearInterval(interval), timeout + 1000);
 
-    return () => {
-      clearInterval(interval)
-      clearTimeout(timeout)
+      return () => clearInterval(interval);
     }
-  }, [onCertUrlReady])
+  }, [onCertificateReady, onCertUrlReady, timeout]);
 
   return (
     <>
-      {/* Hidden TrustedForm fields - No name attributes to prevent URL pollution */}
-      <input type="hidden" id="xxTrustedFormCertUrl_0" value="" />
-      <input type="hidden" id="xxTrustedFormToken_0" value="" />
+      {/* TrustedForm hidden fields */}
+      <input 
+        type="hidden" 
+        id="xxTrustedFormCertUrl_0" 
+        name="xxTrustedFormCertUrl"
+        ref={certUrlRef}
+      />
+      <input 
+        type="hidden" 
+        id="xxTrustedFormToken_0" 
+        name="xxTrustedFormToken"
+        ref={tokenRef}
+      />
     </>
-  )
-}
+  );
+};
+
+// Hook to use TrustedForm functionality
+export const useTrustedForm = (timeout: number = 2000) => {
+  const getCertificateData = (): Promise<{ certUrl: string; token: string }> => {
+    return new Promise((resolve) => {
+      const certUrlElement = document.getElementById('xxTrustedFormCertUrl_0') as HTMLInputElement;
+      const tokenElement = document.getElementById('xxTrustedFormToken_0') as HTMLInputElement;
+      
+      const checkForCertificate = () => {
+        const certUrl = certUrlElement?.value || '';
+        const token = tokenElement?.value || '';
+        
+        if (certUrl) {
+          resolve({ certUrl, token });
+          return;
+        }
+
+        // Check again after a short delay
+        setTimeout(checkForCertificate, 100);
+      };
+
+      // Start checking immediately
+      checkForCertificate();
+
+      // Fallback timeout
+      setTimeout(() => {
+        const certUrl = certUrlElement?.value || '';
+        const token = tokenElement?.value || '';
+        resolve({ certUrl, token });
+      }, timeout);
+    });
+  };
+
+  return { getCertificateData };
+};
+
+export default TrustedForm;

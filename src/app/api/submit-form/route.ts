@@ -68,6 +68,8 @@ export async function POST(request: NextRequest) {
     // Log form submission for monitoring (production logging)
     if (process.env.NODE_ENV === 'development') {
       console.log('Form submission received:', { firstName, lastName, email, phone, zipCode, homeOwner, debtAmount, subid1, subid2, subid3 })
+      console.log('🔍 TrustedForm Certificate URL:', trustedformCertUrl)
+      console.log('🔍 Full form data being sent to LeadProsper:', formData)
     }
 
     // Send to LeadProsper

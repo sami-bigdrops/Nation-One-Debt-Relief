@@ -28,6 +28,11 @@ export default function Hero() {
   const [subid2, setSubid2] = useState("");
   const [subid3, setSubid3] = useState("");
 
+  // Handle TrustedForm certificate data
+  const handleTrustedFormReady = (certUrl: string) => {
+    setTrustedFormCertUrl(certUrl);
+  };
+
   // UTM Parameter Detection with Cookie Fallback
   useEffect(() => {
     // Helper function to get cookie value
@@ -69,16 +74,29 @@ export default function Hero() {
 
   // Phone Number Formatting
   const formatPhoneNumber = (value: string) => {
+    // Remove all non-digits
     const phoneNumber = value.replace(/\D/g, "");
-    if (phoneNumber.length >= 6) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+    
+    // Limit to 10 digits
+    const limitedPhoneNumber = phoneNumber.slice(0, 10);
+    
+    // Don't format if empty
+    if (limitedPhoneNumber.length === 0) {
+      return "";
+    }
+    
+    // Progressive formatting - only add formatting when we have enough digits
+    if (limitedPhoneNumber.length >= 6) {
+      return `(${limitedPhoneNumber.slice(0, 3)}) ${limitedPhoneNumber.slice(
         3,
         6
-      )}-${phoneNumber.slice(6)}`;
-    } else if (phoneNumber.length >= 3) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+      )}-${limitedPhoneNumber.slice(6)}`;
+    } else if (limitedPhoneNumber.length >= 3) {
+      return `(${limitedPhoneNumber.slice(0, 3)}) ${limitedPhoneNumber.slice(3)}`;
+    } else {
+      // No formatting for 1-2 digits
+      return limitedPhoneNumber;
     }
-    return phoneNumber;
   };
 
   // Zip Code Formatting
@@ -278,12 +296,12 @@ export default function Hero() {
 
                 <div className="form-group">
                   {/* TrustedForm Integration */}
-                  <TrustedForm onCertUrlReady={setTrustedFormCertUrl} />
+                  <TrustedForm onCertUrlReady={handleTrustedFormReady} />
 
-                  {/* UTM Parameters - No name attributes to prevent URL pollution */}
-                  <input type="hidden" id="hidden_subid1" value="" />
-                  <input type="hidden" id="hidden_subid2" value="" />
-                  <input type="hidden" id="hidden_subid3" value="" />
+                  {/* UTM Parameters - Values populated from state */}
+                  <input type="hidden" id="hidden_subid1" name="subid1" value={subid1} />
+                  <input type="hidden" id="hidden_subid2" name="subid2" value={subid2} />
+                  <input type="hidden" id="hidden_subid3" name="subid3" value={subid3} />
 
                   <input
                     type="text"
@@ -319,10 +337,47 @@ export default function Hero() {
                     type="tel"
                     id="phone"
                     placeholder="Phone"
+                    maxLength={14}
                     {...register("phone")}
                     onChange={(e) => {
-                      const formatted = formatPhoneNumber(e.target.value);
-                      e.target.value = formatted;
+                      const input = e.target;
+                      const oldValue = input.value;
+                      
+                      // Format the new value
+                      const formatted = formatPhoneNumber(input.value);
+                      
+                      // Always update to ensure proper formatting
+                      if (formatted !== input.value) {
+                        input.value = formatted;
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      // Handle backspace specifically
+                      if (e.key === 'Backspace') {
+                        const input = e.target as HTMLInputElement;
+                        const currentValue = input.value;
+                        const cursorPosition = input.selectionStart || 0;
+                        
+                        // If cursor is at the beginning of a formatting character, remove it
+                        if (currentValue[cursorPosition - 1] === ' ' || 
+                            currentValue[cursorPosition - 1] === '-' || 
+                            currentValue[cursorPosition - 1] === ')') {
+                          e.preventDefault();
+                          
+                          // Remove the formatting character and the digit before it
+                          const newValue = currentValue.slice(0, cursorPosition - 2) + currentValue.slice(cursorPosition);
+                          input.value = newValue;
+                          
+                          // Set cursor position after the deleted content
+                          const newCursorPosition = Math.max(0, cursorPosition - 2);
+                          setTimeout(() => {
+                            input.setSelectionRange(newCursorPosition, newCursorPosition);
+                          }, 0);
+                          
+                          // Trigger onChange to reformat
+                          input.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                      }
                     }}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-400 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
