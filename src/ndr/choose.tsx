@@ -1,20 +1,14 @@
+'use client'
+
 import React from 'react'
+import { useFormModal } from '../components/FormModalProvider'
 
 export default function Choose() {
+  const { openModal } = useFormModal()
+  
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault()
-    
-    // Find the navbar based on screen size
-    const navbar = window.innerWidth >= 768 ? 
-      document.querySelector('#desktop-navbar') :
-      document.querySelector('#mobile-navbar')
-    
-    if (navbar) {
-      navbar.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      })
-    }
+    openModal()
   }
   return (
     <div

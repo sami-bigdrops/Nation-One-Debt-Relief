@@ -312,7 +312,7 @@ export default function Hero() {
                     id="first-name"
                     placeholder="First Name"
                     {...register("firstName")}
-                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-400 ${
+                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
                     }`}
                   />
@@ -322,7 +322,7 @@ export default function Hero() {
                     id="last-name"
                     placeholder="Last Name"
                     {...register("lastName")}
-                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-400 ${
+                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
                     }`}
                   />
@@ -332,7 +332,7 @@ export default function Hero() {
                     id="email"
                     placeholder="Email"
                     {...register("email")}
-                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-400 ${
+                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
                     }`}
                   />
@@ -383,7 +383,7 @@ export default function Hero() {
                         }
                       }
                     }}
-                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-400 ${
+                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
                     }`}
                   />
@@ -397,7 +397,7 @@ export default function Hero() {
                       const formatted = formatZipCode(e.target.value)
                       e.target.value = formatted
                     }}
-                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-400 ${
+                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
                     }`}
                   />
@@ -405,7 +405,7 @@ export default function Hero() {
                   <select
                     id="home-owner"
                     {...register("homeOwner")}
-                    className={`w-full text-sm lg:text-base p-2.5 rounded border mb-1.5 lg:mb-2.5 appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-400 ${
+                    className={`w-full text-sm lg:text-base p-2.5 rounded border mb-1.5 lg:mb-2.5 appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
                     }`}
                     style={{
@@ -423,7 +423,7 @@ export default function Hero() {
                   <select
                     id="debt-amount"
                     {...register("debtAmount")}
-                    className={`w-full text-sm lg:text-base p-2.5 rounded border mb-1.5 lg:mb-2.5 appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-400 ${
+                    className={`w-full text-sm lg:text-base p-2.5 rounded border mb-1.5 lg:mb-2.5 appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
                     }`}
                     style={{
@@ -468,7 +468,7 @@ export default function Hero() {
                 </button>
                 </div>
 
-                <div className="w-full text-xs lg:text-sm text-gray-400 text-justify">
+                <div className="w-full text-xs lg:text-sm text-gray-400 text-justify mt-3">
                   <p>
                     By submitting this form, I agree to the Nation One Debt
                     Relief Terms of Use and Privacy Policy. I authorize Nation

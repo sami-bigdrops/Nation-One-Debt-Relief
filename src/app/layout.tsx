@@ -3,6 +3,7 @@ import { Onest } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import FormModalProvider from "../components/FormModalProvider";
 
 const onest = Onest({
   variable: "--font-onest",
@@ -85,7 +86,9 @@ export default function RootLayout({
       >
         <Analytics />
         <SpeedInsights />
-        {children}
+        <FormModalProvider>
+          {children}
+        </FormModalProvider>
       </body>
     </html>
   );
