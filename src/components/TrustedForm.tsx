@@ -31,13 +31,13 @@ const TrustedForm: React.FC<TrustedFormProps> = ({
   const certUrlRef = useRef<HTMLInputElement>(null);
   const tokenRef = useRef<HTMLInputElement>(null);
 
-  const initTrustedForm = () => {
+    const initTrustedForm = () => {
     // Avoid loading multiple times
     if (scriptRef.current || document.querySelector('script[src*="trustedform.js"]')) {
       return;
-    }
-
-    // Create script element
+      }
+      
+      // Create script element
     const tf = document.createElement('script');
     tf.type = 'text/javascript';
     tf.async = true;
@@ -60,7 +60,7 @@ const TrustedForm: React.FC<TrustedFormProps> = ({
       console.error('Failed to load TrustedForm script');
     };
 
-    // Insert script
+      // Insert script
     const firstScript = document.getElementsByTagName('script')[0];
     if (firstScript && firstScript.parentNode) {
       firstScript.parentNode.insertBefore(tf, firstScript);
