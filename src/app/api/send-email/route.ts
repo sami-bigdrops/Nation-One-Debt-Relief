@@ -52,11 +52,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-  } catch {
+  } catch (error) {
+    console.error('Send email API error:', error);
     return NextResponse.json(
       { 
         success: false,
-        error: 'Internal server error'
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     )

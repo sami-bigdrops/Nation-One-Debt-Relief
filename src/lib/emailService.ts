@@ -211,7 +211,8 @@ nationonedebtrelief.com | 12540 SW Leveton Dr, #P2150 Tualatin, OR, 97062
 
     await sesClient.send(command);
     return true;
-  } catch {
+  } catch (error) {
+    console.error('Email sending error:', error);
     return false;
   }
 }
