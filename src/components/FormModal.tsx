@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
 import TrustedForm from "./TrustedForm";
 import LoadingSpinner from "./LoadingSpinner";
 
@@ -26,13 +25,11 @@ interface FormModalProps {
 }
 
 export default function FormModal({ isOpen, onClose }: FormModalProps) {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [trustedFormCertUrl, setTrustedFormCertUrl] = useState("");
   const [subid1, setSubid1] = useState("");
   const [subid2, setSubid2] = useState("");
   const [subid3, setSubid3] = useState("");
-
   // Handle TrustedForm certificate data
   const handleTrustedFormReady = (certUrl: string) => {
     setTrustedFormCertUrl(certUrl);
@@ -187,19 +184,22 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
         localStorage.setItem('thankyou_expires', result.expiresAt.toString());
       }
 
+      // Store email for thank you page email sending
+      localStorage.setItem('form_data', JSON.stringify({
+        email: data.email
+      }));
+
       reset();
       onClose();
 
-      // Redirect to thank you page after 2 seconds
-      setTimeout(() => {
-        router.push("/thankyou");
-      }, 2000);
+      // Redirect immediately using the redirectUrl from API (same as test page)
+      if (result.redirectUrl) {
+        window.location.href = result.redirectUrl;
+      } else {
+        window.location.href = "/thankyou";
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      
-      if (process.env.NODE_ENV === 'development') {
-        console.error("Form submission error:", error);
-      }
       
       // Show error to user
       alert(`Submission failed: ${errorMessage}`);

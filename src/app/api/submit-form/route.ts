@@ -67,9 +67,6 @@ export async function POST(request: NextRequest) {
 
     // Log form submission for monitoring (production logging)
     if (process.env.NODE_ENV === 'development') {
-      console.log('Form submission received:', { firstName, lastName, email, phone, zipCode, homeOwner, debtAmount, subid1, subid2, subid3 })
-      console.log('🔍 TrustedForm Certificate URL:', trustedformCertUrl)
-      console.log('🔍 Full form data being sent to LeadProsper:', formData)
     }
 
     // Send to LeadProsper
@@ -96,7 +93,6 @@ export async function POST(request: NextRequest) {
     }
 
     if (process.env.NODE_ENV === 'development') {
-      console.log('LeadProsper response:', result);
     }
 
     if (result.status === 'ACCEPTED' || result.status === 'DUPLICATED' || result.status === 'ERROR') {
@@ -107,7 +103,7 @@ export async function POST(request: NextRequest) {
       const successResponse = { 
         success: true, 
         message: 'Form submitted successfully',
-        redirectUrl: '/thankyou',
+        redirectUrl: `/thankyou?email=${encodeURIComponent(email.trim())}&buyer=NDR`,
         leadProsperStatus: result.status,
         accessToken,
         expiresAt

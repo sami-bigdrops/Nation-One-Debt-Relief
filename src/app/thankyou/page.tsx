@@ -1,7 +1,9 @@
 'use client'
 
-import React, { useEffect, useState, Suspense } from 'react'
+import React, { useEffect, useState, Suspense, useCallback } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+
 import { useSearchParams } from 'next/navigation'
 
 const ads = [
@@ -31,13 +33,147 @@ interface UtmParams {
 
 function ThankYouContent() {
   const searchParams = useSearchParams()
+  const router = useRouter()
+  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [utmParams, setUtmParams] = useState<UtmParams>({
     utm_source: '',
     utm_id: '',
     utm_s1: ''
   })
+  const [emailSent, setEmailSent] = useState(false)
+  const [buyer, setBuyer] = useState<string | null>(null)
+  const [hasProcessedUrl, setHasProcessedUrl] = useState(false)
+
+
+  // Function to send welcome email from thank you page
+  const sendWelcomeEmailFromThankYou = useCallback(async () => {
+    try {
+      // Get email from URL parameters (passed from webhook)
+      const emailFromUrl = searchParams.get('email');
+      
+      // Fallback to localStorage if URL parameter not available
+      const formData = localStorage.getItem('form_data');
+      const emailFromStorage = formData ? JSON.parse(formData).email : null;
+      
+      const email = emailFromUrl || emailFromStorage;
+      
+      
+      if (!email) {
+        return;
+      }
+      
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email
+        })
+      });
+      
+      if (response.ok) {
+        setEmailSent(true);
+      }
+    } catch {
+    }
+  }, [searchParams]);
+
+  // Protection useEffect - runs first to check access authorization
+  useEffect(() => {
+    // Prevent multiple runs
+    if (hasProcessedUrl) return;
+    
+    const checkAccess = async () => {
+      try {
+        // Check if user came from webhook (has email parameter)
+        const emailFromUrl = searchParams.get('email');
+        const buyerFromUrl = searchParams.get('buyer');
+        
+        if (emailFromUrl) {
+          // User came from webhook or form submission with email - allow access
+          setIsAuthorized(true);
+          setIsLoading(false);
+          setHasProcessedUrl(true);
+          
+          // Set buyer from URL parameters
+          if (buyerFromUrl) {
+            setBuyer(buyerFromUrl);
+          }
+          
+          // Clean URL by removing query parameters after extracting the data
+          setTimeout(() => {
+            if (typeof window !== 'undefined') {
+              const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+              window.history.replaceState({}, document.title, cleanUrl);
+            }
+          }, 100);
+          
+          // Send welcome email if not already sent
+          if (!emailSent) {
+            sendWelcomeEmailFromThankYou();
+          }
+          return;
+        }
+
+        // Check for access token in localStorage (for direct access)
+        const token = localStorage.getItem('thankyou_token');
+        const expiresAt = localStorage.getItem('thankyou_expires');
+
+        if (!token || !expiresAt) {
+          router.replace('/');
+          return;
+        }
+
+        // Check if token has expired
+        const currentTime = Date.now();
+        const tokenExpiry = parseInt(expiresAt, 10);
+        
+        if (currentTime > tokenExpiry) {
+          localStorage.removeItem('thankyou_token');
+          localStorage.removeItem('thankyou_expires');
+          router.replace('/');
+          return;
+        }
+
+        // Validate token against server (optional additional security check)
+        try {
+          const response = await fetch('/api/validate-access', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+          });
+          
+          if (!response.ok) {
+            throw new Error('Token validation failed');
+          }
+        } catch {
+          // If validation endpoint doesn't exist or fails, we'll rely on localStorage validation
+        }
+
+        // All checks passed - authorize access
+        setIsAuthorized(true);
+        
+        // Clear the token to prevent reuse (one-time access)
+        localStorage.removeItem('thankyou_token');
+        localStorage.removeItem('thankyou_expires');
+        
+        // Send welcome email if not already sent
+        if (!emailSent) {
+          sendWelcomeEmailFromThankYou();
+        }
+      } catch {
+        router.replace('/');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAccess();
+  }, [router, emailSent, sendWelcomeEmailFromThankYou, hasProcessedUrl, searchParams]);
 
   useEffect(() => {
+    // Skip UTM parameter processing if not authorized
+    if (!isAuthorized) return;
 
     // Helper function to get cookie value
     const getCookie = (name: string) => {
@@ -78,7 +214,24 @@ function ThankYouContent() {
         utm_s1: cookieUtmS1
       })
     }
-  }, [searchParams])
+  }, [searchParams, isAuthorized])
+
+  // Show loading state while checking authorization
+  if (isLoading) {
+    return (
+      <main className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </main>
+    );
+  }
+
+  // Show nothing if not authorized (redirect is in progress)
+  if (!isAuthorized) {
+    return null;
+  }
 
   return (
     <main>
@@ -91,16 +244,30 @@ function ThankYouContent() {
             <h3 className="text-4xl font-bold text-gray-800 mb-12">
               Thank you!
             </h3>
-            <Image 
-                src="/national-debt-relief.jpg" 
-                alt="Thank You Image" 
-                width={100} 
-                height={100}
-                className="mx-auto w-80 h-auto mb-8"
-              />
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+            
+            {/* Show buyer logo only if buyer is known and not empty */}
+            {buyer && buyer.trim() !== '' && (
+              <div className="mb-8">
+                <Image 
+                  src={`/buyer/${buyer.toLowerCase().replace(/\s+/g, '-')}.png`}
+                  alt={`${buyer} Logo`}
+                  width={200}
+                  height={100}
+                  className="mx-auto h-20 w-auto mb-4"
+                />
+              </div>
+            )}
+            
+            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
               Congratulations! You have been matched with our partner. You will be contacted by a Debt Relief Specialist shortly.
             </p>
+            
+            {/* Email confirmation message */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8">
+              <p className="text-green-800 font-medium">
+                ✓ A confirmation message has been sent to your email address.
+              </p>
+            </div>
             <div className="thankyou-contact-container bg-white p-6 rounded-lg shadow-md border border-gray-200">
               <h4 className="text-xl font-semibold text-gray-800 mb-3">
                 For immediate assistance
