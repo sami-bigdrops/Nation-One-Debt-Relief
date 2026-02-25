@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
+    console.log('[submit-form] Incoming body:', JSON.stringify(body, null, 2))
+
     const { firstName, lastName, email, phone, zipCode, homeOwner, debtAmount, city, state, subid1, subid2, subid3, trustedformCertUrl } = body
 
     // Validate required fields
@@ -65,10 +66,6 @@ export async function POST(request: NextRequest) {
       trustedform_cert_url: trustedformCertUrl || '',
       ...(city != null && city !== '' && { city: String(city).trim() }),
       ...(state != null && state !== '' && { state: String(state).trim() }),
-    };
-
-    // Log form submission for monitoring (production logging)
-    if (process.env.NODE_ENV === 'development') {
     }
 
     // Send to LeadProsper

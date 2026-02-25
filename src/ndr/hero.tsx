@@ -136,8 +136,21 @@ export default function Hero() {
     setIsSubmitting(true);
 
     try {
+      let city = data.city ?? '';
+      let state = data.state ?? '';
+      const zipDigits = (data.zipCode ?? '').replace(/\D/g, '');
+      if (zipDigits.length === 5 && (!city || !state)) {
+        const lookup = await lookupZip(zipDigits);
+        if (lookup) {
+          city = lookup.city;
+          state = lookup.state;
+        }
+      }
+
       const submissionData = {
         ...data,
+        city: city || undefined,
+        state: state || undefined,
         subid1,
         subid2,
         subid3,
@@ -315,10 +328,11 @@ export default function Hero() {
                   {/* TrustedForm Integration */}
                   <TrustedForm onCertUrlReady={handleTrustedFormReady} />
 
-                  {/* UTM Parameters - Values populated from state */}
                   <input type="hidden" id="hidden_subid1" name="subid1" value={subid1} />
                   <input type="hidden" id="hidden_subid2" name="subid2" value={subid2} />
                   <input type="hidden" id="hidden_subid3" name="subid3" value={subid3} />
+                  <input type="hidden" {...register("city")} />
+                  <input type="hidden" {...register("state")} />
 
                   <input
                     type="text"
@@ -326,7 +340,7 @@ export default function Hero() {
                     placeholder="First Name"
                     {...register("firstName")}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                      errors.firstName ? "border-red-500" : "border-gray-300"
                     }`}
                   />
 
@@ -335,8 +349,8 @@ export default function Hero() {
                     id="last-name"
                     placeholder="Last Name"
                     {...register("lastName")}
-                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
                     }`}
                   />
 
@@ -346,7 +360,7 @@ export default function Hero() {
                     placeholder="Email"
                     {...register("email")}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                      errors.email ? "border-red-500" : "border-gray-300"
                     }`}
                   />
 
@@ -396,7 +410,7 @@ export default function Hero() {
                       }
                     }}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                      errors.phone ? "border-red-500" : "border-gray-300"
                     }`}
                   />
 
@@ -404,35 +418,23 @@ export default function Hero() {
                     type="text"
                     id="zip-code"
                     placeholder="Zip Code"
-                    {...register("zipCode")}
-                    onBlur={handleZipBlur}
-                    onChange={(e) => {
-                      const formatted = formatZipCode(e.target.value)
-                      e.target.value = formatted
-                    }}
+                    {...(() => {
+                      const { onChange, onBlur, ...rest } = register("zipCode");
+                      return {
+                        ...rest,
+                        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                          const formatted = formatZipCode(e.target.value);
+                          e.target.value = formatted;
+                          onChange(e);
+                        },
+                        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+                          onBlur(e);
+                          void handleZipBlur();
+                        },
+                      };
+                    })()}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-
-                  <input
-                    type="text"
-                    id="city"
-                    placeholder="City"
-                    {...register("city")}
-                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-
-                  <input
-                    type="text"
-                    id="state"
-                    placeholder="State (e.g. NY)"
-                    {...register("state")}
-                    maxLength={2}
-                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                      errors.zipCode ? "border-red-500" : "border-gray-300"
                     }`}
                   />
 
@@ -440,7 +442,7 @@ export default function Hero() {
                     id="home-owner"
                     {...register("homeOwner")}
                     className={`w-full text-sm lg:text-base p-2.5 rounded border mb-1.5 lg:mb-2.5 appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                      errors.homeOwner ? "border-red-500" : "border-gray-300"
                     }`}
                     style={{
                       backgroundImage:
@@ -458,7 +460,7 @@ export default function Hero() {
                     id="debt-amount"
                     {...register("debtAmount")}
                     className={`w-full text-sm lg:text-base p-2.5 rounded border mb-1.5 lg:mb-2.5 appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
-                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                      errors.debtAmount ? "border-red-500" : "border-gray-300"
                     }`}
                     style={{
                       backgroundImage:
