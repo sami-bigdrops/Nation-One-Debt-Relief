@@ -4,7 +4,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
-    const { firstName, lastName, email, phone, zipCode, homeOwner, debtAmount, subid1, subid2, subid3, trustedformCertUrl } = body
+    const { firstName, lastName, email, phone, zipCode, homeOwner, debtAmount, city, state, subid1, subid2, subid3, trustedformCertUrl } = body
 
     // Validate required fields
     if (!firstName || !lastName || !email || !phone || !zipCode || !homeOwner || !debtAmount) {
@@ -63,6 +63,8 @@ export async function POST(request: NextRequest) {
       user_agent: request.headers.get('user-agent') || '',
       landing_page_url: request.headers.get('referer') || '',
       trustedform_cert_url: trustedformCertUrl || '',
+      ...(city != null && city !== '' && { city: String(city).trim() }),
+      ...(state != null && state !== '' && { state: String(state).trim() }),
     };
 
     // Log form submission for monitoring (production logging)
@@ -83,50 +85,48 @@ export async function POST(request: NextRequest) {
     // Get the raw response text
     const rawResponse = await response.text();
 
-    // Try to parse as JSON
-    let result;
+    let result: { status?: string; code?: number; result?: { redirect_url?: string }; message?: string };
     try {
       result = JSON.parse(rawResponse);
     } catch {
-      // Even if parsing fails, we'll treat it as success
       result = { status: 'ACCEPTED' };
     }
 
-    if (process.env.NODE_ENV === 'development') {
+    const isEpcDebtSuccess = result.code === 200 && result.message === 'Approved' && typeof result.result?.redirect_url === 'string' && result.result.redirect_url.length > 0;
+    if (isEpcDebtSuccess) {
+      return NextResponse.json({
+        success: true,
+        message: 'Form submitted successfully',
+        redirectUrl: result.result!.redirect_url!,
+      }, { status: 200 });
     }
 
     if (result.status === 'ACCEPTED' || result.status === 'DUPLICATED' || result.status === 'ERROR') {
-      // Generate unique access token for thank you page
       const accessToken = crypto.randomUUID();
-      const expiresAt = Date.now() + (10 * 60 * 1000); // Token expires in 10 minutes
-      
-      const successResponse = { 
-        success: true, 
+      const expiresAt = Date.now() + (10 * 60 * 1000);
+      const successResponse = {
+        success: true,
         message: 'Form submitted successfully',
         redirectUrl: `/thankyou?email=${encodeURIComponent(email.trim())}&buyer=NDR`,
         leadProsperStatus: result.status,
         accessToken,
         expiresAt
       };
-      
-      // Set secure cookie for additional validation
-      const response = NextResponse.json(successResponse, { status: 200 });
-      response.cookies.set('thankyou_access', accessToken, {
+      const res = NextResponse.json(successResponse, { status: 200 });
+      res.cookies.set('thankyou_access', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 10 * 60 // 10 minutes
+        maxAge: 10 * 60
       });
-      
-      return response;
-    } else {
-      const errorResponse = { 
-        success: false, 
-        error: 'Lead submission failed',
-        leadProsperStatus: result.status
-      };
-      return NextResponse.json(errorResponse, { status: 400 })
+      return res;
     }
+
+    return NextResponse.json({
+      success: false,
+      error: 'Lead submission failed',
+      leadProsperStatus: result.status
+    }, { status: 400 });
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },

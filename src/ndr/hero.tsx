@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import TrustedForm from "../components/TrustedForm";
 import LoadingSpinner from "../components/LoadingSpinner";
+import SubmissionOverlay from "../components/SubmissionOverlay";
+import { lookupZip } from "@/lib/zipLookup";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -13,6 +15,8 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
   zipCode: z.string().min(1, "Zip code is required"),
+  city: z.string().optional(),
+  state: z.string().optional(),
   homeOwner: z.string().min(1, "Please select home owner status"),
   debtAmount: z.string().min(1, "Please select debt amount"),
 });
@@ -111,9 +115,22 @@ export default function Hero() {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
+    watch,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+
+  const zipCode = watch('zipCode');
+  const handleZipBlur = async () => {
+    const zip = (zipCode ?? '').replace(/\D/g, '');
+    if (zip.length !== 5) return;
+    const lookup = await lookupZip(zip);
+    if (lookup) {
+      setValue('city', lookup.city);
+      setValue('state', lookup.state);
+    }
+  };
 
     const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -142,20 +159,16 @@ export default function Hero() {
 
       const result = await response.json();
 
-      // Store access token in localStorage for thank you page access
       if (result.accessToken && result.expiresAt) {
         localStorage.setItem('thankyou_token', result.accessToken);
         localStorage.setItem('thankyou_expires', result.expiresAt.toString());
       }
-
-      // Store email for thank you page email sending
-      localStorage.setItem('form_data', JSON.stringify({
-        email: data.email
-      }));
+      if (!result.redirectUrl?.startsWith('http')) {
+        localStorage.setItem('form_data', JSON.stringify({ email: data.email }));
+      }
 
       reset();
 
-      // Redirect immediately using the redirectUrl from API (same as test page)
       if (result.redirectUrl) {
         window.location.href = result.redirectUrl;
       } else {
@@ -163,17 +176,15 @@ export default function Hero() {
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      
-      
-      // Show error to user (you could add error state if needed)
       alert(`Submission failed: ${errorMessage}`);
-    } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div
+    <>
+      <SubmissionOverlay visible={isSubmitting} />
+      <div
       className="w-full h-full bg-cover bg-center bg-no-repeat p-4 lg:py-10 lg:px-10 xl:px-50 xl:py-20"
       style={{
         backgroundImage:
@@ -394,10 +405,32 @@ export default function Hero() {
                     id="zip-code"
                     placeholder="Zip Code"
                     {...register("zipCode")}
+                    onBlur={handleZipBlur}
                     onChange={(e) => {
                       const formatted = formatZipCode(e.target.value)
                       e.target.value = formatted
                     }}
+                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
+                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+
+                  <input
+                    type="text"
+                    id="city"
+                    placeholder="City"
+                    {...register("city")}
+                    className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
+                      Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+
+                  <input
+                    type="text"
+                    id="state"
+                    placeholder="State (e.g. NY)"
+                    {...register("state")}
+                    maxLength={2}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       Object.keys(errors).length > 0 ? "border-red-500" : "border-gray-300"
                     }`}
@@ -489,5 +522,6 @@ export default function Hero() {
         </div>
       </div>
     </div>
+    </>
   );
 }
