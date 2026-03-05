@@ -173,29 +173,29 @@ body.modal-open * {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-    /* Prevent horizontal scrolling and force scroll */
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  /* Prevent horizontal scrolling on all elements */
   html {
     overflow-x: hidden;
+    overflow-y: auto;
     scroll-behavior: smooth;
   }
-  
-  /* Prevent force scroll and unwanted scroll behaviors */
-  * {
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100%;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
   }
   
-  /* Hide scrollbars for webkit browsers */
-  *::-webkit-scrollbar {
+  /* Hide scrollbars only on non-root elements; allow page scrollbar so scrolling is visible */
+  *:not(html):not(body)::-webkit-scrollbar {
     display: none;
+  }
+  *:not(html):not(body) {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  * {
+    -webkit-overflow-scrolling: touch;
   }
   
   /* Prevent horizontal drag scrolling */
