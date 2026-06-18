@@ -244,6 +244,8 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
 
         {/* Form */}
         <form
+          method="POST"
+          action="/api/submit-form"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit(onSubmit)(e);

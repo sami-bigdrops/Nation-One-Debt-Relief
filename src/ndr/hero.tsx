@@ -310,7 +310,7 @@ export default function Hero() {
               <form
                 id="form"
                 method="POST"
-                action="#"
+                action="/api/submit-form"
                 onSubmit={(e) => {
                   e.preventDefault();
                   handleSubmit(onSubmit)(e);

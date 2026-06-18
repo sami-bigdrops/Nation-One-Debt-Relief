@@ -78,6 +78,26 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <link rel="shortcut icon" href="/favicon.png" />
+        <meta
+          name="arohaa-verify"
+          content="EaWlYZNHhU0a57NHsRGgDI6P73Y25mmX"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "!function(w){if(w.arohaa)return;var a=function(){(a.q=a.q||[]).push(arguments)};a.q=[];a.l=Date.now();w.arohaa=a}(window);",
+          }}
+        />
+        <script
+          id="arohaa-sdk"
+          src="https://cdn.arohaa.net/sdk.js"
+          async
+          data-wid="67255ffc-0f49-4686-82d4-ce85b58586eb"
+          data-api="https://api.arohaa.net"
+          data-lp-id="lp_HJlHLWMy4p8KTwFQ"
+          data-page="nationonedebtrelief.com"
+          data-formtype="single"
+        />
       </head>
       <body
         className={`${onest.variable} antialiased`}
