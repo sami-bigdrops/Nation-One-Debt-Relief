@@ -244,6 +244,7 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
 
         {/* Form */}
         <form
+          id="lead-form-modal"
           method="POST"
           action="/api/submit-form"
           onSubmit={(e) => {
@@ -272,6 +273,7 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
             <input
               type="text"
               placeholder="First Name"
+              data-arohaa-field="firstName"
               {...register("firstName")}
               className={`w-full text-sm p-3 rounded border focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm placeholder:text-gray-700 ${
                 errors.firstName ? "border-red-500" : "border-gray-300"
@@ -281,6 +283,7 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
             <input
               type="text"
               placeholder="Last Name"
+              data-arohaa-field="lastName"
               {...register("lastName")}
               className={`w-full text-sm p-3 rounded border focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm placeholder:text-gray-700 ${
                 errors.lastName ? "border-red-500" : "border-gray-300"
@@ -290,6 +293,7 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
             <input
               type="email"
               placeholder="Email"
+              data-arohaa-field="email"
               {...register("email")}
               className={`w-full text-sm p-3 rounded border focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm placeholder:text-gray-700 ${
                 errors.email ? "border-red-500" : "border-gray-300"
@@ -300,6 +304,7 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
               type="tel"
               placeholder="Phone"
               maxLength={14}
+              data-arohaa-field="phone"
               {...register("phone")}
               onChange={(e) => {
                 const input = e.target;
@@ -336,6 +341,7 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
             <input
               type="text"
               placeholder="Zip Code"
+              data-arohaa-field="zipCode"
               {...(() => {
                 const { onChange, onBlur, ...rest } = register("zipCode");
                 return {
@@ -357,6 +363,7 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
             />
 
             <select
+              data-arohaa-field="homeOwner"
               {...register("homeOwner")}
               className={`w-full text-sm p-3 rounded border appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] ${
                 errors.homeOwner ? "border-red-500" : "border-gray-300"
@@ -374,6 +381,7 @@ export default function FormModal({ isOpen, onClose }: FormModalProps) {
             </select>
 
             <select
+              data-arohaa-field="debtAmount"
               {...register("debtAmount")}
               className={`w-full text-sm p-3 rounded border appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] ${
                 errors.debtAmount ? "border-red-500" : "border-gray-300"

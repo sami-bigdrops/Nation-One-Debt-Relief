@@ -308,7 +308,7 @@ export default function Hero() {
           <div className="w-full md:w-[40%] ">
             <div className="flex flex-col justify-center items-center gap-2.8 w-full">
               <form
-                id="form"
+                id="lead-form"
                 method="POST"
                 action="/api/submit-form"
                 onSubmit={(e) => {
@@ -338,6 +338,7 @@ export default function Hero() {
                     type="text"
                     id="first-name"
                     placeholder="First Name"
+                    data-arohaa-field="firstName"
                     {...register("firstName")}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       errors.firstName ? "border-red-500" : "border-gray-300"
@@ -348,6 +349,7 @@ export default function Hero() {
                     type="text"
                     id="last-name"
                     placeholder="Last Name"
+                    data-arohaa-field="lastName"
                     {...register("lastName")}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       errors.lastName ? "border-red-500" : "border-gray-300"
@@ -358,6 +360,7 @@ export default function Hero() {
                     type="email"
                     id="email"
                     placeholder="Email"
+                    data-arohaa-field="email"
                     {...register("email")}
                     className={`w-full text-sm p-2.5 rounded border mb-1.5 lg:mb-2.5 focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       errors.email ? "border-red-500" : "border-gray-300"
@@ -369,6 +372,7 @@ export default function Hero() {
                     id="phone"
                     placeholder="Phone"
                     maxLength={14}
+                    data-arohaa-field="phone"
                     {...register("phone")}
                     onChange={(e) => {
                       const input = e.target;
@@ -418,6 +422,7 @@ export default function Hero() {
                     type="text"
                     id="zip-code"
                     placeholder="Zip Code"
+                    data-arohaa-field="zipCode"
                     {...(() => {
                       const { onChange, onBlur, ...rest } = register("zipCode");
                       return {
@@ -440,6 +445,7 @@ export default function Hero() {
 
                   <select
                     id="home-owner"
+                    data-arohaa-field="homeOwner"
                     {...register("homeOwner")}
                     className={`w-full text-sm lg:text-base p-2.5 rounded border mb-1.5 lg:mb-2.5 appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       errors.homeOwner ? "border-red-500" : "border-gray-300"
@@ -458,6 +464,7 @@ export default function Hero() {
 
                   <select
                     id="debt-amount"
+                    data-arohaa-field="debtAmount"
                     {...register("debtAmount")}
                     className={`w-full text-sm lg:text-base p-2.5 rounded border mb-1.5 lg:mb-2.5 appearance-none bg-no-repeat bg-right pr-10 cursor-pointer focus:outline-none focus:border-red-600 focus:shadow-[0_0_0_2px_rgba(0,40,104,0.1)] placeholder:text-sm lg:placeholder:text-base placeholder:text-gray-700 ${
                       errors.debtAmount ? "border-red-500" : "border-gray-300"

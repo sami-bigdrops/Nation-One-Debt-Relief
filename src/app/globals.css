@@ -48,11 +48,6 @@ body.modal-open {
   width: 100% !important;
 }
 
-/* Prevent iOS Safari bounce scrolling */
-html {
-  overscroll-behavior: none;
-}
-
 /* Additional mobile scroll prevention */
 body.modal-open,
 body.modal-open * {
@@ -197,46 +192,10 @@ body.modal-open * {
   * {
     -webkit-overflow-scrolling: touch;
   }
-  
-  /* Prevent horizontal drag scrolling */
-  body, html {
-    overscroll-behavior: none;
-    -webkit-overscroll-behavior: none;
-    -moz-overscroll-behavior: none;
-    -ms-overscroll-behavior: none;
-  }
-  
-  /* Prevent text selection drag scrolling */
-  * {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  /* Allow text selection in form inputs and content areas */
-  input, textarea, select, [contenteditable="true"], p, h1, h2, h3, h4, h5, h6, span, div {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-  }
-  
-  /* Prevent horizontal scrolling on main containers */
-  .container, .form-group, form {
-    overflow-x: hidden;
-    max-width: 100vw;
-  }
-  
+
   /* Ensure images don't cause horizontal overflow */
   img {
     max-width: 100%;
     height: auto;
-  }
-  
-  /* Prevent table horizontal scrolling */
-  table {
-    max-width: 100%;
-    overflow-x: hidden;
   }
 }
